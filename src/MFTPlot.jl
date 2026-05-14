@@ -3,20 +3,20 @@ module MFTPlot
 
     using Plots
 
-    using ..MeanFieldToolkit.TBMFT: TightBindingMFT
-    using ..MeanFieldToolkit.BDGMFT: BdGMFT
+    using ..MeanFieldToolkit.TBMFT: TBMFTModel
+    using ..MeanFieldToolkit.BdGMFT: BdGMFTModel
 
 
 @doc """
 ```julia
-PlotMFT!(mft::TightBindingMFT ; plot_labels::Vector{String} = getproperty.(mft.HoppingBlock.params, :label), plot_legend::Bool = true)
-PlotMFT!(mft::BdGMFT ; plot_labels::Vector{String} = getproperty.(mft.HoppingBlock.params, :label), plot_legend::Bool = true)
+PlotMFT!(mft::TBMFTModel ; plot_labels::Vector{String} = getproperty.(mft.HoppingBlock.params, :label), plot_legend::Bool = true)
+PlotMFT!(mft::BdGMFTModel ; plot_labels::Vector{String} = getproperty.(mft.HoppingBlock.params, :label), plot_legend::Bool = true)
 ```
 Plots the order parameters of the given `MFT` object.
 - If `plot_labels` is passed, then only the order parameters with the given labels are plotted.
 - If `plot_legend` is passed, then the legend is shown in the plot.
 """
-    function PlotMFT!(mft::TightBindingMFT ; plot_labels::Vector{String} = getproperty.(mft.HoppingBlock.params, :label), plot_legend::Bool = true)
+    function PlotMFT!(mft::TBMFTModel ; plot_labels::Vector{String} = getproperty.(mft.HoppingBlock.params, :label), plot_legend::Bool = true)
 
         p = plot(grid=false, legend = plot_legend, bg_legend = :transparent, framestyle = :box)
 
@@ -35,7 +35,7 @@ Plots the order parameters of the given `MFT` object.
     end
 
 
-    function PlotMFT!(mft::BdGMFT ; plot_labels::Vector{String} = getproperty.(mft.HoppingBlock.params, :label), plot_legend::Bool = true)
+    function PlotMFT!(mft::BdGMFTModel ; plot_labels::Vector{String} = getproperty.(mft.HoppingBlock.params, :label), plot_legend::Bool = true)
 
         p = plot(grid=false, legend = plot_legend, bg_legend = :transparent, framestyle = :box)
 
@@ -63,11 +63,11 @@ Plots the order parameters of the given `MFT` object.
 
 @doc """
 ```julia
-PlotMFTEnergy!(mft::T) where {T<:Union{TightBindingMFT, BdGMFT}}
+PlotMFTEnergy!(mft::T) where {T<:Union{TBMFTModel, BdGMFTModel}}
 ```
 Plots the mean-field energy of the given `MFT` object.
 """
-    function PlotMFTEnergy!(mft::T) where {T<:Union{TightBindingMFT, BdGMFT}}
+    function PlotMFTEnergy!(mft::T) where {T<:Union{TBMFTModel, BdGMFTModel}}
 
         plot!(mft.MFTEnergy, marker = :circle, lw = 2.0, label = "MFT Energy")
 

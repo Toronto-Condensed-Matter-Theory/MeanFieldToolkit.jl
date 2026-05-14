@@ -86,7 +86,7 @@ DiagonalizeHamiltonian!(H)
 M = Model(HoppingUC, bz, H; T=T, filling=filling, stat=stat)
 SolveModel!(M)
 
-mft = TightBindingMFT(M, ChiParams, [UParam], IntraQuarticToHopping)
+mft = TBMFTModel(M, ChiParams, [UParam], IntraQuarticToHopping)
 
 fileName = "./Altermagnetism/U=$(round(U, digits=2))_t1=$(round(t1, digits=2))_t2=$(round(t2, digits=2))_new.jld2"
 # SolveMFT!(mft, fileName)

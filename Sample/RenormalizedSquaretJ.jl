@@ -81,7 +81,7 @@ for filling in fillings
     bdgModel = BdGModel(HoppingUC, PairingUC, bz, bdgH; T=T, filling=filling, stat=stat)
     SolveModel!(bdgModel)
 
-    bdgmft = BdGMFT(bdgModel, HoppingOrders, PairingOrders, Interactions, InterQuarticToHopping, InterQuarticToPairing)
+    bdgmft = BdGMFTModel(bdgModel, HoppingOrders, PairingOrders, Interactions, InterQuarticToHopping, InterQuarticToPairing)
     fileName = "./SquaretJ_Data/filling=$(round(filling, digits=3))_t1=$(round(t1Param.value[end], digits=3))_J=$(round(J, digits=3))_wtWeiss.jld2"
     SolveMFT!(bdgmft, fileName)
 

@@ -12,13 +12,13 @@ module MeanFieldToolkit
     using .MFTEnergies
     export GetMFTBondEnergies
 
-    include("TightBindingMFT.jl")
+    include("TBMFT.jl")
     using .TBMFT
-    export TightBindingMFT, GetMFTEnergy
+    export TBMFTModel, GetMFTEnergy
 
     include("BdGMFT.jl")
-    using .BDGMFT
-    export BdGMFT, GetMFTEnergy
+    using .BdGMFT
+    export BdGMFTModel, GetMFTEnergy
 
     include("Build.jl")
     using .Build

@@ -5,21 +5,21 @@ module Build
     using LinearAlgebra, TightBindingToolkit, Logging
 
     using ..MeanFieldToolkit.MFTBonds: GetMFTBonds, GetBondDictionary
-    using ..MeanFieldToolkit.TBMFT:TightBindingMFT
-    using ..MeanFieldToolkit.BDGMFT:BdGMFT
+    using ..MeanFieldToolkit.TBMFT:TBMFTModel
+    using ..MeanFieldToolkit.BdGMFT:BdGMFTModel
 
 
     ##### ///TODO: Add Free Hopping energies also
 @doc """
 ```julia
-BuildFromInteractions!(tbMFT::TightBindingMFT{T, R}, HoppingOrderLookup::Dict{Tuple, Matrix{ComplexF64}} ; refresh::Bool = true)
-BuildFromInteractions!(bdgMFT::BdGMFT{T, R, S} , HoppingOrderLookup::Dict{Tuple, Matrix{ComplexF64}}, PairingOrderLookup::Dict{Tuple, Matrix{ComplexF64}} ; refresh::Bool = true)
+BuildFromInteractions!(tbMFT::TBMFTModel{T, R}, HoppingOrderLookup::Dict{Tuple, Matrix{ComplexF64}} ; refresh::Bool = true)
+BuildFromInteractions!(bdgMFT::BdGMFTModel{T, R, S} , HoppingOrderLookup::Dict{Tuple, Matrix{ComplexF64}}, PairingOrderLookup::Dict{Tuple, Matrix{ComplexF64}} ; refresh::Bool = true)
 ```
 Builds the MFT decomposed hoppings (and pairings) given a `MFT` object and the lookup tables for the expectation values of the different order parameters.
 If `refresh` is set to `true`, then the MFT bonds are deleted and rebuilt from scratch. Otherwise, the new bonds are appended to the existing bonds.
 
 """
-    function BuildFromInteractions!(tbMFT::TightBindingMFT{T, R}, HoppingOrderLookup::Dict{Tuple, Matrix{ComplexF64}} ; refresh::Bool = true) where {T, R}
+    function BuildFromInteractions!(tbMFT::TBMFTModel{T, R}, HoppingOrderLookup::Dict{Tuple, Matrix{ComplexF64}} ; refresh::Bool = true) where {T, R}
         ##### Deleting all the MFT bonds if refresh
         if refresh
             labels 	=	getproperty.(tbMFT.model.uc.bonds, :label)
@@ -51,7 +51,7 @@ If `refresh` is set to `true`, then the MFT bonds are deleted and rebuilt from s
     end
 
     ##### ///TODO: Add Free Hopping and pairing energies also
-    function BuildFromInteractions!(bdgMFT::BdGMFT{T, R, S} , HoppingOrderLookup::Dict{Tuple, Matrix{ComplexF64}}, PairingOrderLookup::Dict{Tuple, Matrix{ComplexF64}} ; refresh::Bool = true) where {T, R, S}
+    function BuildFromInteractions!(bdgMFT::BdGMFTModel{T, R, S} , HoppingOrderLookup::Dict{Tuple, Matrix{ComplexF64}}, PairingOrderLookup::Dict{Tuple, Matrix{ComplexF64}} ; refresh::Bool = true) where {T, R, S}
         ##### Deleting all the MFT bonds if refresh
         if refresh
             labels 	=	getproperty.(bdgMFT.model.uc_hop.bonds, :label)

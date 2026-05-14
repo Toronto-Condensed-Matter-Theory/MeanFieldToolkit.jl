@@ -76,7 +76,7 @@ for ϕ in phis
     DiagonalizeHamiltonian!(H)
     M = Model(UC, bz, H; T=T, filling=filling, stat=stat)
     ##### Build the mean-field theory object, with chosen scaling such that on-site ordering is suppressed.
-    mft = TightBindingMFT(M, HoppingOrders, Interactions, Function[InterQuarticToHopping], Dict{String,Float64}("ij" => 1.0, "ii" => 0.0, "jj" => 0.0))
+    mft = TBMFTModel(M, HoppingOrders, Interactions, Function[InterQuarticToHopping], Dict{String,Float64}("ij" => 1.0, "ii" => 0.0, "jj" => 0.0))
     ##### File to save data to
     fileName = "./KagomeHeis_Data/J=$(round(J, digits=3))_phi=$(round(ϕ/pi, digits=3))Pi_New.jld2"
     ##### Solve the mean-field theory and save the results in fileName

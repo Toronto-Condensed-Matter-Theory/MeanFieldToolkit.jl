@@ -1,27 +1,39 @@
 name = "MeanFieldToolkit"
 uuid = "b00fcea2-f4b1-4480-b444-a0ed31c44801"
-authors = ["Anjishnu Bose", "Samuel Vadnais"]
-version = "1.1.2"
+version = "4.0.0"
+authors = ["Anjishnu Bose", "Andrew Hardy", "Samuel Vadnais"]
 
 [deps]
+Bijections = "e2ed5e7c-b2de-5872-ae92-c73ca462fb04"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
 FixedPointToolkit = "081f7a28-ac82-48c1-a10e-fa8b3349a52a"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+TensorCast = "02d47bb6-7ce6-556a-be16-bb1710789e2b"
 TightBindingToolkit = "2233325a-6eb3-486f-aff0-670e0939fa7e"
 Tullio = "bc48ee85-29a4-5162-ae0b-a64e1601d4bc"
 
 [compat]
+Bijections = "0.1.10"
 Distributions = "^0.25"
-Statistics = "1.0 - 2.0"
-Tullio = "^0.3"
+FFTW = "1.10.0"
+FixedPointToolkit = "2"
+JLD2 = "0.4"
+LaTeXStrings = "1.4.0"
 Logging = "^1.6.7"
 Plots = "^1.38"
-FixedPointToolkit = "^1"
-TightBindingToolkit = "^2.3.4"
-julia = "^1.7, ^1.9"
+Statistics = "1.0 - 2.0"
+StatsBase = "0.34.10"
+TensorCast = "0.4.9"
+TightBindingToolkit = "4"
+Tullio = "^0.3"
+julia = "1.12"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

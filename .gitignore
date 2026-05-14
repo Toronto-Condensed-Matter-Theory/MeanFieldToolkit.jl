@@ -1,4 +1,6 @@
 /Manifest.toml
+.history/
+history/
 *.dat
 *.pdf
 *.jld2
