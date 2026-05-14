@@ -1,6 +1,6 @@
 name = "MeanFieldToolkit"
 uuid = "b00fcea2-f4b1-4480-b444-a0ed31c44801"
-version = "4.0.0"
+version = "2.4.0"
 authors = ["Anjishnu Bose", "Andrew Hardy", "Samuel Vadnais"]
 
 [deps]
@@ -23,7 +23,7 @@ Tullio = "bc48ee85-29a4-5162-ae0b-a64e1601d4bc"
 Bijections = "0.1.10"
 Distributions = "^0.25"
 FFTW = "1.10.0"
-FixedPointToolkit = "2"
+FixedPointToolkit = "1"
 JLD2 = "0.4"
 LaTeXStrings = "1.4.0"
 Logging = "^1.6.7"
@@ -31,7 +31,7 @@ Plots = "^1.38"
 Statistics = "1.0 - 2.0"
 StatsBase = "0.34.10"
 TensorCast = "0.4.9"
-TightBindingToolkit = "4"
+TightBindingToolkit = "2"
 Tullio = "^0.3"
 julia = "1.12"
 
