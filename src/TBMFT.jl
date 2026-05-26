@@ -4,7 +4,8 @@ module TBMFT
 
     using TightBindingToolkit, LinearAlgebra, Logging
 
-    using ..MeanFieldToolkit.MFTBonds: GetBondCoorelation
+    using ..MeanFieldToolkit.MFTBonds: GetBondCoorelation, GetBondDictionary
+    using ..MeanFieldToolkit.MFTEnergies: GetMFTBondEnergies
 
 
 @doc """
@@ -77,8 +78,6 @@ Returns the total mean-field energy of the model including decomposed interactio
 
 """
     function GetMFTEnergy(mft::TBMFTModel{T, R}) :: Float64 where {T, R}
-        ##### /// TODO: Add Free Hopping energies also
-        ##### /// TODO: Test!!!!
 
         Energy      =   0.0
         lookup      =   Lookup(mft.model.uc)
@@ -91,7 +90,23 @@ Returns the total mean-field energy of the model including decomposed interactio
             Energy      +=  sum((t_ij .* G_ij))
         end
 
-        return real(Energy) / length(mft.model.uc.basis)
+        DC_Energy   =   0.0
+        HoppingOrderLookup =   Dict{Tuple, Matrix{ComplexF64}}(Lookup(mft.HoppingOrders))
+
+        for (i, Interaction) in enumerate(mft.Interactions)
+            IntLookup      =   Lookup([Interaction])
+            scaling = get(mft.MFTScaling, Interaction.label, mft.MFTScaling)
+
+            for BondKey in keys(IntLookup)
+                Expectations        =   GetBondDictionary(HoppingOrderLookup, BondKey, mft.model.uc.localDim)
+                Decomposed          =   mft.MFTDecomposition[i](IntLookup[BondKey] , Expectations)
+
+                ##### The double counting energy is 1/2 of the mean-field potential expectation value
+                DC_Energy += GetMFTBondEnergies(Expectations, Decomposed, mft.model.uc ; scaling = Dict{String, Float64}(scaling)) / 2.0
+            end
+        end
+
+        return real(Energy - DC_Energy) / length(mft.model.uc.basis)
     end
 
 

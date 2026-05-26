@@ -4,7 +4,8 @@ module BdGMFT
 
     using TightBindingToolkit, LinearAlgebra, Logging
 
-    using ..MeanFieldToolkit.MFTBonds: GetBondCoorelation
+    using ..MeanFieldToolkit.MFTBonds: GetBondCoorelation, GetBondDictionary
+    using ..MeanFieldToolkit.MFTEnergies: GetMFTBondEnergies
 
     import ..MeanFieldToolkit.TBMFT: GetMFTEnergy
     
@@ -161,7 +162,26 @@ Returns the total mean-field energy of the BdG model including decomposed intera
             Energy      +=  sum((p_ij .* F_ij))
         end
 
-        return real(Energy) / length(bdgMFT.model.uc_hop.basis)
+        DC_Energy = 0.0
+        HoppingOrderLookup =   Dict{Tuple, Matrix{ComplexF64}}(Lookup(bdgMFT.HoppingOrders))
+        PairingOrderLookup =   Dict{Tuple, Matrix{ComplexF64}}(Lookup(bdgMFT.PairingOrders))
+
+        for (i, Interaction) in enumerate(bdgMFT.Interactions)
+            IntLookup      =   Lookup([Interaction])
+
+            for BondKey in keys(IntLookup)
+                HoppingExpectations =   GetBondDictionary(HoppingOrderLookup, BondKey, bdgMFT.model.uc_hop.localDim)
+                PairingExpectations =   GetBondDictionary(PairingOrderLookup, BondKey, bdgMFT.model.uc_pair.localDim)
+
+                DecomposedHopping   =   bdgMFT.HoppingDecomposition[i](IntLookup[BondKey] , HoppingExpectations)
+                DecomposedPairing   =   bdgMFT.PairingDecomposition[i](IntLookup[BondKey] , PairingExpectations)
+
+                DC_Energy += GetMFTBondEnergies(HoppingExpectations, DecomposedHopping, bdgMFT.model.uc_hop ; scaling = bdgMFT.HoppingScaling) / 2.0
+                DC_Energy += GetMFTBondEnergies(PairingExpectations, DecomposedPairing, bdgMFT.model.uc_pair ; scaling = bdgMFT.PairingScaling) / 2.0
+            end
+        end
+
+        return real(Energy - DC_Energy) / length(bdgMFT.model.uc_hop.basis)
     end
 
 

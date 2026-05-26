@@ -22,7 +22,7 @@ Returns the mean-field energy contribution given an interaction and expectation 
         chi_ii      =   get(Chis, "ii", zeros(ComplexF64, repeat([uc.localDim], 2)...))
         chi_jj      =   get(Chis, "jj", zeros(ComplexF64, repeat([uc.localDim], 2)...))
 
-        energy      =   sum(scaling["ij"] .* (t_ij .* chi_ij) + ((scaling["i1"] .* (t_ii .* chi_ii) + scaling["jj"] .* (t_jj .* chi_jj)) / 2))
+        energy      =   sum(scaling["ij"] .* (t_ij .* chi_ij) + ((scaling["ii"] .* (t_ii .* chi_ii) + scaling["jj"] .* (t_jj .* chi_jj)) / 2))
         return real(energy)
     end
 
