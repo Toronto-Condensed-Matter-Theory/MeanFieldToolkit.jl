@@ -1,6 +1,6 @@
 name = "MeanFieldToolkit"
 uuid = "b00fcea2-f4b1-4480-b444-a0ed31c44801"
-version = "2.0.0"
+version = "2.1.0"
 authors = ["Anjishnu Bose", "Andrew Hardy", "Samuel Vadnais"]
 
 [deps]
