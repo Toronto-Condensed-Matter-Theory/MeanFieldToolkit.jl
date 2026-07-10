@@ -70,7 +70,7 @@ GetMFTBonds(DecomposedBonds::Dict{String, Matrix{ComplexF64}} ; BondKey::Tuple{I
 Returns a vector of `Bond` objects using the bond dictionary created by [`GetBondDictionary`][@ref]. The bond objects have `labels`, and are scaled according to `scaling`.
 
 """
-    function GetMFTBonds(DecomposedBonds::Dict{String, Matrix{ComplexF64}} ; BondKey::Tuple{Int64, Int64, Vector{Int64}}, uc::UnitCell{2}, scaling::Dict{String, Float64} = Dict("ij" => 1.0, "ii" => 1.0, "jj" => 1.0), labels::Dict{String, String} = Dict("ij" => "Hopping", "ii" => "Hopping On-Site", "jj" => "Hopping On-Site")) :: Vector{Bond{2}}
+    function GetMFTBonds(DecomposedBonds::Dict{String, Matrix{ComplexF64}} ; BondKey::Tuple{Int64, Int64, Vector{Int64}}, uc::UnitCell{2}, scaling::Dict{String, <:Any} = Dict("ij" => 1.0, "ii" => 1.0, "jj" => 1.0), labels::Dict{String, String} = Dict("ij" => "Hopping", "ii" => "Hopping On-Site", "jj" => "Hopping On-Site")) :: Vector{Bond{2}}
 
         base, target, offset = BondKey
 
