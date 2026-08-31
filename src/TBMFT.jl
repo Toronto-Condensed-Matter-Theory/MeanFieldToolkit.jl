@@ -101,8 +101,8 @@ Returns the total mean-field energy of the model including decomposed interactio
                 Expectations        =   GetBondDictionary(HoppingOrderLookup, BondKey, mft.model.uc.localDim)
                 Decomposed          =   mft.MFTDecomposition[i](IntLookup[BondKey] , Expectations)
 
-                ##### The double counting energy is 1/2 of the mean-field potential expectation value
-                DC_Energy += GetMFTBondEnergies(Expectations, Decomposed, mft.model.uc ; scaling = scaling) / 2.0
+                ##### GetMFTBondEnergies already returns the double-counting-corrected interaction energy (its internal /2 on "ii"/"jj" is the Euler-theorem halving); dividing again here double-corrects.
+                DC_Energy += GetMFTBondEnergies(Expectations, Decomposed, mft.model.uc ; scaling = scaling)
             end
         end
 

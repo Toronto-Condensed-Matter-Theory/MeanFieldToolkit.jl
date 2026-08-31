@@ -176,8 +176,9 @@ Returns the total mean-field energy of the BdG model including decomposed intera
                 DecomposedHopping   =   bdgMFT.HoppingDecomposition[i](IntLookup[BondKey] , HoppingExpectations)
                 DecomposedPairing   =   bdgMFT.PairingDecomposition[i](IntLookup[BondKey] , PairingExpectations)
 
-                DC_Energy += GetMFTBondEnergies(HoppingExpectations, DecomposedHopping, bdgMFT.model.uc_hop ; scaling = bdgMFT.HoppingScaling) / 2.0
-                DC_Energy += GetMFTBondEnergies(PairingExpectations, DecomposedPairing, bdgMFT.model.uc_pair ; scaling = bdgMFT.PairingScaling) / 2.0
+                ##### GetMFTBondEnergies already returns the double-counting-corrected interaction energy (its internal /2 on "ii"/"jj" is the Euler-theorem halving); dividing again here double-corrects.
+                DC_Energy += GetMFTBondEnergies(HoppingExpectations, DecomposedHopping, bdgMFT.model.uc_hop ; scaling = bdgMFT.HoppingScaling)
+                DC_Energy += GetMFTBondEnergies(PairingExpectations, DecomposedPairing, bdgMFT.model.uc_pair ; scaling = bdgMFT.PairingScaling)
             end
         end
 
