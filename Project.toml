@@ -20,7 +20,7 @@ TightBindingToolkit = "2233325a-6eb3-486f-aff0-670e0939fa7e"
 Tullio = "bc48ee85-29a4-5162-ae0b-a64e1601d4bc"
 
 [compat]
-Bijections = "0.1.10"
+Bijections = "0.1.10, 0.2"
 Distributions = "^0.25"
 FFTW = "1.10.0"
 FixedPointToolkit = "1"
