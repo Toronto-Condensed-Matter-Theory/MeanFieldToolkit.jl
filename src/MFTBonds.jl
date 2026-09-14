@@ -49,8 +49,8 @@ Given a lookup dictionary `BondLookup`, and a bond with `BondKey=(i, j, offset)`
                                     + adjoint(get(BondLookup, AdjBondKey, zeros(ComplexF64, repeat([localDim], 2)...))))
 
         else
-            Expectation_ij      =   (         get(BondLookup,    BondKey, zeros(ComplexF64, repeat([localDim], 2)...))
-                                    + adjoint(get(BondLookup, AdjBondKey, zeros(ComplexF64, repeat([localDim], 2)...)))) / 2
+           Expectation_ij      =   zeros(ComplexF64, repeat([localDim], 2)...)#(         get(BondLookup,    BondKey, zeros(ComplexF64, repeat([localDim], 2)...))
+                                   #+ adjoint(get(BondLookup, AdjBondKey, zeros(ComplexF64, repeat([localDim], 2)...)))) / 2 # What even is that?
         end
 
         Expectation_ii      =   get(BondLookup, (  base,   base, zeros(Int64, length(offset))), zeros(ComplexF64, repeat([localDim], 2)...))
