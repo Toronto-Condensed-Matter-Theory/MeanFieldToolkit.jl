@@ -11,13 +11,13 @@ module MFTIter
     #####/// TODO : Try to vectorize maybe? Literally no need
 @doc """
 ```julia
-DecomposeGr(Gr::Array{Matrix{ComplexF64}, T}, param::Param{2, R}, uc::UnitCell{T}, bz::BZ)
+DecomposeGr(Gr::Array{Matrix{ComplexF64}, N}, param::Param{2, R}, uc::UnitCell{T}, bz::BZ)
 ```
 Decomposes the Green's function into an order parameter. 
 The order parameter is calculated by taking the trace decomposition of the Green's function on each bond the order parameter exists in, and then taking the mean of all the bond order parameters, following the pattern of the given order parameter.
 
 """
-    function DecomposeGr(Gr::Array{Matrix{ComplexF64}, T}, param::Param{2, R}, uc::UnitCell{T}, bz::BZ) :: R where {T, R <: Union{Float64, ComplexF64}}
+    function DecomposeGr(Gr::Array{Matrix{ComplexF64}, N}, param::Param{2, R}, uc::UnitCell{T}, bz::BZ) :: R where {N,T, R <: Union{Float64, ComplexF64}}
 
         strengths   =   R[] 
 
