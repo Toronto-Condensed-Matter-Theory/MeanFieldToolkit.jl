@@ -53,7 +53,7 @@ SolveMFT!(mft::BdGMFTModel{T, R, R}, Initial::Vector{R}; Update::Function = Simp
 SolveMFT!(mft::TBMFTModel{T, R}, Initial::Vector{R}, fileName::String; Update::Function = SimpleMixing, Update_kwargs::Dict{Symbol, Any} = Dict{Symbol, Any}(:alpha => 0.5), max_iter::Int64 = 100, tol::Float64 = 1e-6, checkpoint_interval::Int64 = 50, debug::Bool = false) --> SelfCons
 SolveMFT!(mft::BdGMFTModel{T, R, R}, Initial::Vector{R}, fileName::String; Update::Function = SimpleMixing, Update_kwargs::Dict{Symbol, Any} = Dict{Symbol, Any}(:alpha => 0.5), max_iter::Int64 = 100, tol::Float64 = 1e-6, checkpoint_interval::Int64 = 50, debug::Bool = false) --> SelfCons
 ```
-Solves the mean-field theory on the given `MFT` object, and returns the `SelfCons` object (Refer to [FixedPointToolkit](https://github.com/Anjishnubose/FixedPointToolkit.jl)) containing the results of the mean-field theory.
+Solves the mean-field theory on the given `MFT` object, and returns the `SelfCons` object (Refer to [FixedPointToolkit](https://github.com/Toronto-Condensed-Matter-Theory/FixedPointToolkit.jl)) containing the results of the mean-field theory.
 - If `fileName` is passed and `debug = true`, then the `SelfCons` object is checkpointed to the file after every `checkpoint_interval` iterations.
 - If `fileName` is passed and `debug = false`, then checkpointing is suppressed and only a compact final output is saved to `fileName`.
 - If `Initial` is passed, then the initial order parameters are set to the values in `Initial`.

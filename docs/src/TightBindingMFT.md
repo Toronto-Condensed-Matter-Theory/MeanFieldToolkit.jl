@@ -3,6 +3,6 @@
 ```@autodocs
 Modules = [MeanFieldToolkit, MeanFieldToolkit.TBMFT]
 Private = false
-Pages   = ["TightBindingMFT.jl"]
+Pages   = ["TBMFT.jl"]
 
 ```

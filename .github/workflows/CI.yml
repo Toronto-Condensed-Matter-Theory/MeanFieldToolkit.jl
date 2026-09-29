@@ -29,9 +29,6 @@ jobs:
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
-      - name: Develop dependency toolboxes
-        run: |
-          julia -e 'using Pkg; Pkg.develop(url="https://github.com/Toronto-Condensed-Matter-Theory/FixedPointToolkit.jl.git"); Pkg.develop(url="https://github.com/Toronto-Condensed-Matter-Theory/TightBindingToolkit.jl.git"); Pkg.instantiate()'
       - uses: julia-actions/cache@v3
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1

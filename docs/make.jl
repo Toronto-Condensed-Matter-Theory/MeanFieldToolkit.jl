@@ -4,6 +4,7 @@ using MeanFieldToolkit
 makedocs(
     build       =   "build" ,
     sitename    =   "MeanFieldToolkit.jl"    ,
+    checkdocs   =   :exports    ,
     modules     =   [MeanFieldToolkit.MFTDecompose, MeanFieldToolkit.MFTBonds, MeanFieldToolkit.TBMFT, MeanFieldToolkit.BdGMFT, MeanFieldToolkit.Build, MeanFieldToolkit.MFTIter, MeanFieldToolkit.MFTRun, MeanFieldToolkit.MFTResume, MeanFieldToolkit.MFTPlot, MeanFieldToolkit.InteractionConvert]   ,
     pages = [
         "Introduction"              =>  "index.md",
@@ -21,6 +22,6 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/andrewkhardy/MeanFieldToolkit.jl.git",
+    repo = "github.com/Toronto-Condensed-Matter-Theory/MeanFieldToolkit.jl.git",
     devbranch = "main"
 )
