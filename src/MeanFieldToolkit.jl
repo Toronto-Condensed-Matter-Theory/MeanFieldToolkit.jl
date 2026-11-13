@@ -10,15 +10,15 @@ module MeanFieldToolkit
 
     include("MFTEnergies.jl")
     using .MFTEnergies
-    export GetMFTBondEnergies
+    export GetMFTBondEnergies, FermionEntropy
 
     include("TBMFT.jl")
     using .TBMFT
-    export TBMFTModel, GetMFTEnergy
+    export TBMFTModel, GetMFTEnergy, GetMFTEntropy, GetMFTFreeEnergy
 
     include("BdGMFT.jl")
     using .BdGMFT
-    export BdGMFTModel, GetMFTEnergy
+    export BdGMFTModel, GetMFTEnergy, GetMFTEntropy, GetMFTFreeEnergy
 
     include("Build.jl")
     using .Build
@@ -26,7 +26,7 @@ module MeanFieldToolkit
 
     include("MFTIterator.jl")
     using .MFTIter
-    export DecomposeGr, MFTIterator
+    export DecomposeGr, MFTIterator, SolveFilling!
 
     include("MFTRun.jl")
     using .MFTRun

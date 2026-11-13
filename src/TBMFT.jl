@@ -1,11 +1,11 @@
 module TBMFT
 
-    export TBMFTModel, GetMFTEnergy
+    export TBMFTModel, GetMFTEnergy, GetMFTEntropy, GetMFTFreeEnergy
 
     using TightBindingToolkit, LinearAlgebra, Logging
 
     using ..MeanFieldToolkit.MFTBonds: GetBondCoorelation, GetBondDictionary
-    using ..MeanFieldToolkit.MFTEnergies: GetMFTBondEnergies
+    using ..MeanFieldToolkit.MFTEnergies: GetMFTBondEnergies, BondMultiplicity, FermionEntropy
     using ..MeanFieldToolkit.MFTDecompose: CheckDecompositions
 
 
@@ -96,7 +96,8 @@ Returns the total mean-field energy of the model including decomposed interactio
             G_ij        =   GetBondCoorelation(mft.model.Gr, BondKey..., mft.model.uc, mft.model.bz)
 
             t_ij        =   lookup[BondKey]
-            Energy      +=  sum((t_ij .* G_ij))
+            ##### inter-site bonds enter the Hamiltonian together with their Hermitian conjugate
+            Energy      +=  BondMultiplicity(BondKey) * real(sum((t_ij .* G_ij)))
         end
 
         DC_Energy   =   0.0
@@ -119,9 +120,34 @@ Returns the total mean-field energy of the model including decomposed interactio
     end
 
 
+@doc """
+```julia
+GetMFTEntropy(mft::TBMFTModel) --> Float64
+```
+Returns the entropy per site (in units of k_B) of the mean-field quasiparticles at the model's temperature,
+S = Σ_{k,n} s(f(ε_kn - μ)) / N_sites with s the [`FermionEntropy`](@ref). Zero at `T = 0`.
+
+"""
+    function GetMFTEntropy(mft::TBMFTModel) :: Float64
+        M   =   mft.model
+        @assert M.stat == -1 "GetMFTEntropy is implemented for fermions only."
+        iszero(M.T) && return 0.0
+
+        S   =   sum(sum(E -> FermionEntropy((E - M.mu) / M.T), bands) for bands in M.Ham.bands)
+        return S / (length(M.Ham.bands) * length(M.uc.basis))
+    end
 
 
+@doc """
+```julia
+GetMFTFreeEnergy(mft::TBMFTModel) --> Float64
+```
+Returns the mean-field (Helmholtz) free energy per site at fixed filling, F = E - T S, with E from [`GetMFTEnergy`](@ref)
+and S from [`GetMFTEntropy`](@ref). At self-consistency F is stationary in the order parameters, so it is the quantity
+to compare between competing phases at finite temperature (at T → 0 it reduces to E).
 
+"""
+    GetMFTFreeEnergy(mft::TBMFTModel) :: Float64 = GetMFTEnergy(mft) - mft.model.T * GetMFTEntropy(mft)
 
 
 

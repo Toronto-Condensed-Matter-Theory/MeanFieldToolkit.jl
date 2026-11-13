@@ -1,14 +1,14 @@
 module BdGMFT
 
-    export BdGMFTModel, GetMFTEnergy
+    export BdGMFTModel, GetMFTEnergy, GetMFTEntropy, GetMFTFreeEnergy
 
     using TightBindingToolkit, LinearAlgebra, Logging
 
     using ..MeanFieldToolkit.MFTBonds: GetBondCoorelation, GetBondDictionary
-    using ..MeanFieldToolkit.MFTEnergies: GetMFTBondEnergies
+    using ..MeanFieldToolkit.MFTEnergies: GetMFTBondEnergies, BondMultiplicity, FermionEntropy
     using ..MeanFieldToolkit.MFTDecompose: CheckDecompositions
 
-    import ..MeanFieldToolkit.TBMFT: GetMFTEnergy
+    import ..MeanFieldToolkit.TBMFT: GetMFTEnergy, GetMFTEntropy, GetMFTFreeEnergy
     
 
 @doc """
@@ -176,7 +176,7 @@ Returns the total mean-field energy of the BdG model including decomposed intera
             G_ij        =   GetBondCoorelation(bdgMFT.model.Gr, BondKey..., bdgMFT.model.uc_hop, bdgMFT.model.bz)
             t_ij        =   HoppingLookup[BondKey]
 
-            Energy      +=  sum((t_ij .* G_ij))
+            Energy      +=  BondMultiplicity(BondKey) * real(sum((t_ij .* G_ij)))
         end
 
         for BondKey in keys(PairingLookup)
@@ -184,7 +184,8 @@ Returns the total mean-field energy of the BdG model including decomposed intera
             F_ij        =   GetBondCoorelation(bdgMFT.model.Fr, BondKey..., bdgMFT.model.uc_pair, bdgMFT.model.bz)
             p_ij        =   PairingLookup[BondKey]
 
-            Energy      +=  sum((p_ij .* F_ij))
+            ##### every pairing term, on-site included, enters the Hamiltonian together with its Hermitian conjugate
+            Energy      +=  2 * real(sum((p_ij .* F_ij)))
         end
 
         DC_Energy = 0.0
@@ -201,9 +202,9 @@ Returns the total mean-field energy of the BdG model including decomposed intera
                 DecomposedHopping   =   bdgMFT.HoppingDecomposition[i](IntLookup[BondKey] , HoppingExpectations)
                 DecomposedPairing   =   bdgMFT.PairingDecomposition[i](IntLookup[BondKey] , PairingExpectations)
 
-                ##### GetMFTBondEnergies already returns the double-counting-corrected interaction energy (its internal /2 on "ii"/"jj" is the Euler-theorem halving); dividing again here double-corrects.
+                ##### GetMFTBondEnergies returns the double-counting energy ½⟨V_MF⟩ directly; on-site pairing terms carry a Hermitian conjugate, so they are not halved.
                 DC_Energy += GetMFTBondEnergies(HoppingExpectations, DecomposedHopping, bdgMFT.model.uc_hop ; scaling = bdgMFT.HoppingScaling)
-                DC_Energy += GetMFTBondEnergies(PairingExpectations, DecomposedPairing, bdgMFT.model.uc_pair ; scaling = bdgMFT.PairingScaling)
+                DC_Energy += GetMFTBondEnergies(PairingExpectations, DecomposedPairing, bdgMFT.model.uc_pair ; scaling = bdgMFT.PairingScaling, onsite_weight = 1.0)
             end
         end
 
@@ -211,12 +212,25 @@ Returns the total mean-field energy of the BdG model including decomposed intera
     end
 
 
+@doc """
+```julia
+GetMFTEntropy(bdgMFT::BdGMFTModel) --> Float64
+```
+Returns the entropy per site (in units of k_B) of the Bogoliubov quasiparticles at the model's temperature.
+The BdG spectrum (with μ already included) contains every quasiparticle twice, at ±E, so only the lower half is summed:
+S = Σ_{k, n ≤ N/2} s(E_kn / T) / N_sites. Zero at `T = 0`.
 
+"""
+    function GetMFTEntropy(bdgMFT::BdGMFTModel) :: Float64
+        M   =   bdgMFT.model
+        @assert M.stat == -1 "GetMFTEntropy is implemented for fermions only."
+        iszero(M.T) && return 0.0
 
+        half    =   length(first(M.Ham.bands)) ÷ 2
+        S       =   sum(sum(E -> FermionEntropy(E / M.T), bands[1:half]) for bands in M.Ham.bands)
+        return S / (length(M.Ham.bands) * length(M.uc_hop.basis))
+    end
 
-
-
-
-
+    GetMFTFreeEnergy(bdgMFT::BdGMFTModel) :: Float64 = GetMFTEnergy(bdgMFT) - bdgMFT.model.T * GetMFTEntropy(bdgMFT)
 
 end

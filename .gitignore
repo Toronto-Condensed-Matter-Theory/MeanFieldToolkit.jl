@@ -12,3 +12,5 @@ Sample/KagomeDiracSL/PlotData.jl
 Sample/Altermagnetism/PlotData.jl
 Sample/KagomeHeis_Data/
 docs/build/
+Sample/Manifest.toml
+Sample/output/

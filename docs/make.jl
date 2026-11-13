@@ -5,11 +5,12 @@ makedocs(
     build       =   "build" ,
     sitename    =   "MeanFieldToolkit.jl"    ,
     checkdocs   =   :exports    ,
-    modules     =   [MeanFieldToolkit.MFTDecompose, MeanFieldToolkit.MFTBonds, MeanFieldToolkit.TBMFT, MeanFieldToolkit.BdGMFT, MeanFieldToolkit.Build, MeanFieldToolkit.MFTIter, MeanFieldToolkit.MFTRun, MeanFieldToolkit.MFTResume, MeanFieldToolkit.MFTPlot, MeanFieldToolkit.InteractionConvert]   ,
+    modules     =   [MeanFieldToolkit.MFTDecompose, MeanFieldToolkit.MFTBonds, MeanFieldToolkit.MFTEnergies, MeanFieldToolkit.TBMFT, MeanFieldToolkit.BdGMFT, MeanFieldToolkit.Build, MeanFieldToolkit.MFTIter, MeanFieldToolkit.MFTRun, MeanFieldToolkit.MFTResume, MeanFieldToolkit.MFTPlot, MeanFieldToolkit.InteractionConvert]   ,
     pages = [
         "Introduction"              =>  "index.md",
         "MFTDecompose"              =>  "MFTDecompose.md",
         "MFTBonds"                  =>  "MFTBonds.md",
+        "MFTEnergies"               =>  "MFTEnergies.md",
         "TightBindingMFT"           =>  "TightBindingMFT.md",
         "BdGMFT"                    =>  "BdGMFT.md",
         "Build"                     =>  "Build.md",
