@@ -12,25 +12,20 @@ GetBondCoorelation(Gr::Array{Matrix{ComplexF64}, T}, bond::Bond, uc::UnitCell, b
 Returns the Greens function (correlations) on the given bond from the full Array in `Gr`.
 
 """
+    ##### The momentum-grid index of G at displacement -offset (no allocation).
+    ##### TODO : the extra - sign in offset is because right now G[r] = <f^{dagger}_0 . f_{-r}> ===> NEED TO FIX THIS
+    @inline function CorrelationIndex(offset::Vector{Int64}, bz::BZ, ::Val{T}) :: CartesianIndex{T} where {T}
+        length(offset) == T || throw(DimensionMismatch("bond offset of length $(length(offset)) on a $T-dimensional grid"))
+        return CartesianIndex(ntuple(d -> mod(-offset[d], bz.gridSize[d]) + 1, Val(T)))
+    end
+
     function GetBondCoorelation(Gr::Array{Matrix{ComplexF64}, T}, base::Int64, target::Int64, offset::Vector{Int64}, uc::UnitCell, bz::BZ) :: Matrix{ComplexF64} where {T}
-        index       =   mod.((-offset) , bz.gridSize) .+ ones(Int64, length(offset))
-        ##### TODO : the extra - sign in offset is because right now G[r] = <f^{dagger}_0 . f_{-r}> ===> NEED TO FIX THIS
         b1          =   uc.localDim * (base   - 1) + 1
         b2          =   uc.localDim * (target - 1) + 1
-
-        G           =   Gr[index...][b1 : b1 + uc.localDim - 1, b2 : b2 + uc.localDim - 1]
-        return G
+        return Gr[CorrelationIndex(offset, bz, Val(T))][b1 : b1 + uc.localDim - 1, b2 : b2 + uc.localDim - 1]
     end
 
-    function GetBondCoorelation(Gr::Array{Matrix{ComplexF64}, T}, bond::Bond, uc::UnitCell, bz::BZ) :: Matrix{ComplexF64} where {T}
-        index       =   mod.((-bond.offset) , bz.gridSize) .+ ones(Int64, length(bond.offset))
-        ##### TODO : the extra - sign in offset is because right now G[r] = <f^{dagger}_0 . f_{-r}> ===> NEED TO FIX THIS
-        b1          =   uc.localDim * (bond.base   - 1) + 1
-        b2          =   uc.localDim * (bond.target - 1) + 1
-
-        G           =   Gr[index...][b1 : b1 + uc.localDim - 1, b2 : b2 + uc.localDim - 1]
-        return G
-    end
+    GetBondCoorelation(Gr::Array{Matrix{ComplexF64}, T}, bond::Bond, uc::UnitCell, bz::BZ) where {T} = GetBondCoorelation(Gr, bond.base, bond.target, bond.offset, uc, bz)
 
 
 @doc """
